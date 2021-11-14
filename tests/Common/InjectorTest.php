@@ -743,7 +743,7 @@ class InjectorTest extends BaseInjectorTest
     /**
      * @test
      */
-    public function cannot_invoke_static_magic_method()
+    public function invoke_static_magic_method()
     {
         $container = $this->getContainer();
         $result = (new Injector($container))->invoke([InvokerTestStaticMagicMethodFixture::class, 'foo']);
