@@ -736,4 +736,39 @@ class InjectorTest extends BaseInjectorTest
 
         (new Injector($container))->make(MakeEngineMatherWithParam::class, ['parameter' => 100500]);
     }
+
+
+
+
+    /**
+     * @test
+     */
+    public function cannot_invoke_static_magic_method()
+    {
+        $container = $this->getContainer();
+        $result = (new Injector($container))->invoke([InvokerTestStaticMagicMethodFixture::class, 'foo']);
+
+        $this->assertSame('bar', $result);
+    }
+
+
+
+
+
+
+}
+
+
+class InvokerTestStaticMagicMethodFixture
+{
+    /** @var bool */
+    public static $wasCalled = false;
+    public static function __callStatic(string $name, array $args): string
+    {
+        if ($name === 'foo') {
+            static::$wasCalled = true;
+            return 'bar';
+        }
+        throw new \Exception('Unknown method');
+    }
 }
